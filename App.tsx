@@ -1,74 +1,52 @@
-import React from "react";
-import { View, Text, StyleSheet, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, Button } from "react-native";
 
+export default function Counter() {
 
-export default function App(){
+  const [count, setCount]= useState(660);
 
-  const Card = ({title, content, children}) => {
-
-    return(
-          <View style = {style.constainer}>
-            <Text style = {style.title}>{title}</Text>
-            <Text style = {style.content}>{content}</Text>
-            
-            { children ?(
-              <View style = {style.supView}>
-                  <Text style = {style.supContent}>{children}</Text>
-              </View>
-            ) : null}
-
-          </View>
-    )
+  const increment = () => {
+    setCount(count+1);
   }
+
+  const decrement = () => {
+    setCount(count-1);
+  }
+
   return(
-    <ScrollView>
-      <Card title={"AZERTY"} content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-      Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Card>
-      <Card title={"lorem"} content={"lorem ipsum"}></Card>
-    </ScrollView>
+    <View style = {styles.mainView}>
+
+        <View style = {styles.buttonView}>
+          <Button title="Increment" color={'green'} onPress={increment} touchSoundDisabled />
+          <Button title="Decrement" color={'red'} onPress={decrement} touchSoundDisabled/>
+        </View>
+
+        <View style = {styles.countView}>
+          <Text style = {{fontSize: 95,}}>{count}</Text>
+        </View>
+
+    </View>
   )
 }
 
-const style = StyleSheet.create({
+const styles = StyleSheet.create(
+  {
+    mainView: {
+      flex: 1,
+      backgroundColor: 'darkblue',
+    },
 
-  constainer:{
-    width: "90%",
-    height: "auto",
-    padding: 10,
-    borderRadius: 15,
-    backgroundColor: "green",
-    alignSelf: "center",
-    marginTop: "5%",
-  },
+    buttonView: {
+      flex: 1,
+      flexDirection: 'row',
+      justifyContent: 'center',
+    },
 
-  title:{
-    fontSize: 25,
-    fontWeight: "bold",
-    color: "orange",
-    left: 20,
-  },
-
-  content:{
-    fontSize: 18,
-    color: "white",
-    left: 10,
-    textAlign: "justify",
-  },
-
-  supView:{
-      left: "60%",
-      width: "40%",
-      height: "auto",
-      padding: 5,
-      marginTop: 10,
-      marginBottom: 0,
-      borderRadius: 10,
-      backgroundColor: "orange",
-  },
-
-  supContent:{
-    fontSize: 15,
-    textAlign: "center",
-    color: "#ff0066",
+    countView:{
+      flex: 8,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-around'
+    }
   }
-})
+)
