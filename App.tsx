@@ -1,52 +1,61 @@
-import React, { useState } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+//Exo3_on_the_TextInput_1
+import React, { Component ,useState } from "react";
+import { View, TextInput, Button, StyleSheet, Alert } from "react-native";
 
-export default function Counter() {
+export default function App() {
+  const [text, setText] = useState("");
 
-  const [count, setCount]= useState(660);
+  const handlePress = () => {
+    console.log(text);
+    if (text !== "") {
+      Alert.alert("Informations",
+      text,
+      [
+        {
+          text: "Annuler",
+          style: "cancel",
+        },
+        {
+          text: "Ok",
+        }
+      ],
+      {
+        cancelable: false,
+      });
+    }
+  };
 
-  const increment = () => {
-    setCount(count+1);
-  }
-
-  const decrement = () => {
-    setCount(count-1);
-  }
-
-  return(
-    <View style = {styles.mainView}>
-
-        <View style = {styles.buttonView}>
-          <Button title="Increment" color={'green'} onPress={increment} touchSoundDisabled />
-          <Button title="Decrement" color={'red'} onPress={decrement} touchSoundDisabled/>
-        </View>
-
-        <View style = {styles.countView}>
-          <Text style = {{fontSize: 95,}}>{count}</Text>
-        </View>
-
+  return (
+    <View>
+      <TextInput
+        style={styles.textInput}
+        placeholder="Saisissez du texte"
+        onChangeText={(value) => setText(value)}
+      />
+      <View style={styles.buttonView}>
+        <Button
+          title="Afficher"
+          color={"lightgreen"}
+          onPress={handlePress}
+        />
+      </View>
     </View>
-  )
+  );
 }
 
-const styles = StyleSheet.create(
-  {
-    mainView: {
-      flex: 1,
-      backgroundColor: 'darkblue',
-    },
+const styles = StyleSheet.create({
+  textInput: {
+    borderColor: "grey",
+    borderWidth: 2,
+    borderStyle: "dashed",
+    width: '90%',
+    alignSelf: "center",
+    marginTop: "5%",
+  },
 
-    buttonView: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'center',
-    },
-
-    countView:{
-      flex: 8,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-around'
-    }
-  }
-)
+  buttonView: {
+    marginTop: "2%",
+    width: "50%",
+    alignSelf: "center",
+  },
+});
