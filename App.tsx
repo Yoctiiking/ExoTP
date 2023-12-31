@@ -1,61 +1,23 @@
-//Exo3_on_the_TextInput_1
-import React, { Component ,useState } from "react";
-import { View, TextInput, Button, StyleSheet, Alert } from "react-native";
+//Exo3_on_the_TextInput_2
 
-export default function App() {
-  const [text, setText] = useState("");
+import { View, Text } from 'react-native'
+import React, { useState } from 'react'
 
-  const handlePress = () => {
-    console.log(text);
-    if (text !== "") {
-      Alert.alert("Informations",
-      text,
-      [
-        {
-          text: "Annuler",
-          style: "cancel",
-        },
-        {
-          text: "Ok",
-        }
-      ],
-      {
-        cancelable: false,
-      });
-    }
-  };
+const ChildComponent = ({name}) => {
+  return (
+    <View>
+      <Text>{name}</Text>
+    </View>
+  );
+};
+
+export default function ParentComponent() {
+
+  const [info, setInfo] = useState("Voici l'info")
 
   return (
     <View>
-      <TextInput
-        style={styles.textInput}
-        placeholder="Saisissez du texte"
-        onChangeText={(value) => setText(value)}
-      />
-      <View style={styles.buttonView}>
-        <Button
-          title="Afficher"
-          color={"lightgreen"}
-          onPress={handlePress}
-        />
-      </View>
+      <ChildComponent name = {info} />
     </View>
-  );
+  )
 }
-
-const styles = StyleSheet.create({
-  textInput: {
-    borderColor: "grey",
-    borderWidth: 2,
-    borderStyle: "dashed",
-    width: '90%',
-    alignSelf: "center",
-    marginTop: "5%",
-  },
-
-  buttonView: {
-    marginTop: "2%",
-    width: "50%",
-    alignSelf: "center",
-  },
-});
