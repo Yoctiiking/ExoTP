@@ -1,96 +1,71 @@
-//Exo3_on_the_TextInput_5
+//Exo4_on_the_TextInput_1
 import React, { useState } from 'react';
 import {
   View,
   Text,
-  Button,
-  SafeAreaView,
   StyleSheet,
-  TextInput,
   ScrollView,
   Alert,
-  ToastAndroid,
+  FlatList,
+  TouchableOpacity
 } from 'react-native';
 
 export default function App() {
-  const [identifiants, setIndentifiants] = useState([
-    {
-      placeholder: "Nom d'utilisateur",
-      value: '',
-      type: 'email-address',
-      security: false
-    },
-    {
-      placeholder: 'Mot de passe',
-      value: '',
-      type: 'default',
-      security: true
-    },
-  ]);
 
-  const updateIdentifiants = (value, index) => {
-    const stageId = [...identifiants];
-    stageId[index].value = value;
-    setIndentifiants(stageId);
-  };
+const DATA = [
+  { id: '1', name: 'Alice', age: 25, city: 'Paris' },
+  { id: '2', name: 'Bob', age: 30, city: 'New York' },
+  { id: '3', name: 'Charlie', age: 28, city: 'London' },
+  { id: '4', name: 'Diana', age: 22, city: 'Tokyo' },
+  { id: '5', name: 'Emma', age: 27, city: 'Berlin' },
+  { id: '6', name: 'Frank', age: 29, city: 'Sydney' },
+  { id: '7', name: 'Grace', age: 31, city: 'Rio de Janeiro' },
+  { id: '8', name: 'Henry', age: 26, city: 'Moscow' },
+  { id: '9', name: 'Ivy', age: 24, city: 'Madrid' },
+  { id: '10', name: 'Jack', age: 32, city: 'Seoul' },
+  { id: '11', name: 'Katherine', age: 23, city: 'Cape Town' },
+  { id: '12', name: 'Leo', age: 33, city: 'Toronto' },
+  { id: '13', name: 'Mia', age: 28, city: 'Amsterdam' },
+  { id: '14', name: 'Noah', age: 27, city: 'Rio de Janeiro' },
+  { id: '15', name: 'Olivia', age: 29, city: 'Los Angeles' },
+  { id: '16', name: 'Paul', age: 26, city: 'Paris' },
+  { id: '17', name: 'Quinn', age: 30, city: 'Barcelona' },
+  { id: '18', name: 'Ryan', age: 25, city: 'Sydney' },
+  { id: '19', name: 'Sophia', age: 31, city: 'Hong Kong' },
+  { id: '20', name: 'Tyler', age: 24, city: 'Berlin' },
+];
 
-  const handlePress = () => {
-    let valide = false;
-    let nbAro = 0;
+const handlePress = (item) => {
+  Alert.alert(
+    "Informations",
+    `Id: ${item.id}
+Nom: ${item.name}
+Age: ${item.age}
+Ville: ${item.city}`,[
+       {
+         title: 'Ok',
+         style: 'default',
+       }
+     ]
+  )
+}
 
-    for (let i = 0; i < identifiants[0].value.length; i++) {
-      if (identifiants[0].value[i] === '@') {
-        nbAro++;
-      }
-    }
-
-    valide = nbAro === 1; // Valide si un seul "@" est trouvé
-
-    if (valide) {
-      if (identifiants[1].value.length >= 8) {
-        console.log(identifiants.map((item) => item.value));
-        Alert.alert(
-          'Login ID',
-          `Username: ${identifiants[0].value}\nPassword: ${identifiants[1].value}`,
-          [
-            {
-              text: 'Ok',
-              style: 'default',
-            },
-          ]
-        );
-      } else {
-        ToastAndroid.show(
-          'Your password must have at least 8 characters',
-          ToastAndroid.LONG
-        );
-      }
-    } else {
-      ToastAndroid.show('Enter a valid email address', ToastAndroid.LONG);
-    }
-  };
+  const renderItem = ({item}) => (
+    <View style={styles.card}>
+      <TouchableOpacity onPress={() => handlePress(item)}>
+        <Text style={{textAlign:'center'}}>{item.name}</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <View style={styles.container}>
       <ScrollView>
-        <Text style={{ fontSize: 50, textAlign: 'center', fontWeight: 'bold', color: "white" }}>
-          LOGIN
-        </Text>
-        {identifiants.map((value, index) => (
-          <TextInput
-            style={styles.textInput}
-            key={index}
-            keyboardType={value.type}
-            secureTextEntry = {value.security}
-            value={value.value}
-            placeholder={value.placeholder}
-            placeholderTextColor="grey"
-            onChangeText={(val) => updateIdentifiants(val, index)}
-          />
-        ))}
-        <View style={styles.buttonView}>
-          <Button title="Connect" onPress={handlePress} />
-        </View>
+        <FlatList
+          data = {DATA}
+          renderItem = {renderItem}
+          keyExtractor = {item => item.id}
+        />
       </ScrollView>
     </View>
   );
@@ -98,22 +73,18 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'black',
     flex: 1,
-    paddingTop: '10%',
+    flexDirection: 'row',
+    paddingTop: '6%',
+    paddingBottom: '1%',
+    alignItems: 'center',
   },
-  textInput: {
-    textAlign: 'center',
-    borderBottomColor: 'white',
+
+  card: {
     borderWidth: 2,
     alignSelf: 'center',
     marginTop: '5%',
-    width: '80%',
-    color: "white",
-  },
-
-  buttonView: {
-    marginTop: 20,
-    alignSelf: 'center',
+    width: '60%',
+    padding: 10,
   },
 });
