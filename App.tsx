@@ -1,4 +1,4 @@
-//Exo4_on_the_TextInput_2
+//Exo4_on_the_FlatList_2
 import React, { useState } from "react";
 import {
   View,
