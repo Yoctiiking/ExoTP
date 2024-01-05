@@ -1,4 +1,4 @@
-//Exo4_on_the_FlatList_4
+//Exo4_on_the_FlatList_5
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -7,7 +7,7 @@ import {
   Alert,
   FlatList,
   TouchableOpacity,
-  ActivityIndicator,
+  TextInput,
 } from "react-native";
 
 export default function App() {
@@ -38,79 +38,73 @@ export default function App() {
     dataEntered.map( (data) => ({...data, isFavorite: false}))
   );
 
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [search, setSearch] = useState(dataUpdated);
 
-  const handlePress = (itemId) => {
-    setDataUpdated( prevState => prevState.map( item =>{ 
-    if(item.id === itemId) 
-    {
-      const updatedItem = {...item, isFavorite:!item.isFavorite};
-      return updatedItem;
-    };
-    return item;}
-    ))
-  };
-
-  const fetchData = async () => {
-    setIsLoading(true);
-    try {
-      setTimeout(() => {
-        const newData = dataEntered.slice(data.length, data.length + 5);
-        setData([...data, ...newData]);
-        setIsLoading(false);
-      }, 1500);
-    } catch (error){
-      setIsLoading(false);
-      console.log("Error")
-    }
+  const handleSearch = (val) => {
+    const filteredData = dataUpdated.filter( (data) => data.name.toLowerCase().includes(val.toLowerCase()));
+    setSearch(filteredData);
   }
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
+  const handlePress = (itemId) => {
+    setSearch( (prevState) => prevState.map( (item) => { 
+      if(item.id === itemId)
+      {
+        const updatedItem = {...item, isFavorite: !item.isFavorite};
+        console.log(`${updatedItem.name} est passé à ${updatedItem.isFavorite}`);
+        return updatedItem;
+      } 
+      return item;
+      })
+      );
+  };
 
   const renderItem = ({item}) =>
     (
     <View style={styles.card}>
-      <TouchableOpacity style={{backgroundColor:item.isFavorite? "lightgreen":"lightgrey", padding:90}} onPress={() => handlePress(item.id)}>
+      <TouchableOpacity style={{backgroundColor:item.isFavorite? "lightgreen":"lightgrey", padding:10}} onPress={() => handlePress(item.id)}>
         <Text style = {{textAlign: "center"}}>{item.name}</Text>
       </TouchableOpacity>
     </View>
-    );
-
-    const renderFooter = () => {
-      return isLoading ? <ActivityIndicator size="large" color="#000" /> : null;
-    };
+    )
 
   return (
-    <View style={styles.container}>
-      <FlatList 
-        data={data}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        onEndReached={fetchData}
-        onEndReachedThreshold={0.1}
-        ListFooterComponent={renderFooter}
-      />
+    <View>
+      <View>
+        <TextInput
+        style = {styles.textInput}
+        onChangeText={(val) => handleSearch(val)}
+         />
+      </View>
+      <View style= {styles.nameView}>
+        <FlatList 
+          data={search}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "row",
-    paddingTop: "1%",
-    paddingBottom: "1%",
-    alignItems: "center",
+  nameView:{
   },
 
   card: {
     borderWidth: 1,
     alignSelf: "center",
-    marginTop: "5%",
+    marginTop: "3%",
     width: "60%",
+  },
+
+  textInput:{
+    borderColor: "black",
+    borderWidth: 1,
+    width: "80%",
+    alignSelf: 'center',
+    marginTop: "1%",
+    marginBottom: "2%",
+    textAlign: "center",
+    fontSize: 25,
   },
 });
